@@ -1,0 +1,245 @@
+{
+    "api": 7,
+    "version": 2,
+    "name": "Kenku FM",
+    "id": "KenkuFMRemote",
+    "plugin_start_cmd" : "python %TP_PLUGIN_FOLDER%KenkuFM/TPKenku.py",
+    "configuration": {
+        "colorDark": "#1f2231",
+        "colorLight": "#4d4d69"
+    },
+    "categories": [
+      {
+        "id": "Main",
+        "name": "Kenku FM",
+        "imagepath": "%TP_PLUGIN_FOLDER%KenkuFM/logo.png",
+        "actions": [
+          {
+            "id": "Kenku_PlayItem",
+            "name": "Play",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Play {$BoardType$} from {$PlaylistName$} item {$SoundId$}",
+            "data": [
+              {
+                "id": "BoardType",
+                "type": "choice",
+                "default": "Playlist",
+                "valueChoices": [
+                    "Playlist",
+                    "Soundboard"
+                ]
+              },
+              {
+                "id": "PlaylistName",
+                "type": "choice",
+                "default": "",
+                "valueChoices": []
+              },
+              {
+                "id": "SoundId",
+                "type": "choice",
+                "default": "",
+                "valueChoices": []
+              }
+            ]
+          },
+          {
+            "id": "Kenku_PlayId",
+            "name": "Play ID",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Play {$BoardType$} item {$SoundId$}",
+            "data": [
+              {
+                "id": "BoardType",
+                "type": "choice",
+                "default": "Playlist",
+                "valueChoices": [
+                    "Playlist",
+                    "Soundboard"
+                ]
+              },
+              {
+                "id": "SoundId",
+                "type": "text",
+                "default": ""
+              }
+            ]
+          },
+          {
+            "id": "Kenku_StopSound",
+            "name": "Stop Sound",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "From {$StopSound_PlaylistName$} stop {$SoundId$}",
+            "data": [
+              {
+                "id": "StopSound_PlaylistName",
+                "type": "choice",
+                "default": "",
+                "valueChoices": []
+              },
+              {
+                "id": "SoundId",
+                "type": "choice",
+                "default": "",
+                "valueChoices": []
+              }
+            ]
+          },
+          {
+            "id": "Kenku_StopAllSound",
+            "name": "Stop All Sounds",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Stop all soundboard sounds.",
+            "data": []
+          },
+          {
+            "id": "Kenku_PauseTrack",
+            "name": "Pause Track",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Pause Track"
+          },
+          {
+            "id": "Kenku_ResumeTrack",
+            "name": "Resume Track",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Resume Track"
+          },
+          {
+            "id": "Kenku_NextTrack",
+            "name": "Next Track",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Next Track"
+          },
+          {
+            "id": "Kenku_PrevTrack",
+            "name": "Previous Track",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Previous Track"
+          },
+          {
+            "id": "Kenku_SetVolume",
+            "name": "Set Volume",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Set volume to {$Volume$}",
+            "data": [
+                {
+                  "id": "Volume",
+                  "type": "number",
+                  "label": "text",
+                  "default": 100,
+                  "minValue": 0,
+                  "maxValue": 100
+                }
+            ]
+          },
+          {
+            "id": "Kenku_MutePlayback",
+            "name": "Mute Playback",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Mute Playback {$MuteState$}",
+            "data": [
+                {
+                  "id": "MuteState",
+                  "type": "choice",
+                  "default": "On",
+                  "valueChoices": [
+                    "On",
+                    "Off"
+                  ]
+                }
+            ]
+          },
+          {
+            "id": "Kenku_Shuffle",
+            "name": "Set Shuffle",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Set shuffle to {$ShuffleState$}",
+            "data": [
+                {
+                  "id": "ShuffleState",
+                  "type": "choice",
+                  "default": "On",
+                  "valueChoices": [
+                    "On",
+                    "Off"
+                  ]
+                }
+            ]
+          },
+          {
+            "id": "Kenku_Repeat",
+            "name": "Set Repeat",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Set Repeat to {$RepeatState$}",
+            "data": [
+                {
+                  "id": "RepeatState",
+                  "type": "choice",
+                  "default": "Off",
+                  "valueChoices": [
+                    "Track",
+                    "Playlist",
+                    "Off"
+                  ]
+                }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "Kenku_is_Playing",
+            "type": "choice",
+            "desc": "Track Is Playing",
+            "default": "False",
+            "valueChoices": [
+                "True",
+                "False"
+            ]
+          },
+          {
+            "id": "Kenku_Current_Track_Name",
+            "type": "text",
+            "desc": "Current Track Name",
+            "default": ""
+          },
+          {
+            "id": "Kenku_Current_Track_Id",
+            "type": "text",
+            "desc": "Current Track Id",
+            "default": ""
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "name": "Kenku Remote Address",
+        "default": "127.0.0.1:3333",
+        "type": "text"
+      }
+    ]
+  }
