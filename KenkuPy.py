@@ -68,6 +68,7 @@ __state_muted = False
 __state_shuffle = False
 __state_repeat = "off"
 __state_playback_track = None
+__state_playback_sounds = []
 
 __tracklist = []
 __soundlist = []
@@ -102,6 +103,7 @@ def query_status():
     global __state_shuffle
     global __state_repeat
     global __state_playback_track
+    global __state_playback_sounds
 
     try:
         # Get the playlist info
@@ -116,7 +118,7 @@ def query_status():
         __soundboards = [Board(sb) for sb in j['soundboards']]
         __soundlist = [Sound(s) for s in j['sounds']]
 
-        # Get the playback state
+        # Get the playback state of the playlist tracks
         j = json.loads(api(PLAYLIST, QUERY_PLAYBACK, METHOD_GET).text)
 
         __state_playlist_playing = j['playing']
@@ -124,7 +126,14 @@ def query_status():
         __state_muted = j['muted']
         __state_shuffle = j['shuffle']
         __state_repeat = j['repeat']
-        __state_playback_track = j['track']
+
+        if 'track' in j:
+            __state_playback_track = j['track']
+
+        # Get the playback state of the soundboard sounds
+        j = json.loads(api(SOUNDBOARD, QUERY_PLAYBACK, METHOD_GET).text)
+        __state_playback_sounds = j['sounds']
+
     except:
         pass
 
@@ -149,6 +158,9 @@ def get_muted() -> bool:
 
 def get_playing_track() -> dict:
     return __state_playback_track
+
+def get_playing_sounds() -> dict:
+    return __state_playback_sounds
 
 def get_board_list(type) -> list:
     return __playlists if type.lower() == PLAYLIST else __soundboards

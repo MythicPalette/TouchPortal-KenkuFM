@@ -70,6 +70,21 @@
             ]
           },
           {
+            "id": "Kenku_ToggleSound",
+            "name": "Toggle Sound By Id",
+            "prefix": "Kenku",
+            "type": "communicate",
+            "tryInline": true,
+            "format": "Toggle {$ToggleSound_SoundId$}",
+            "data": [
+              {
+                "id": "ToggleSound_SoundId",
+                "type": "text",
+                "default": ""
+              }
+            ]
+          },
+          {
             "id": "Kenku_StopSound",
             "name": "Stop Sound",
             "prefix": "Kenku",
@@ -230,6 +245,12 @@
             "id": "Kenku_Current_Track_Id",
             "type": "text",
             "desc": "Current Track Id",
+            "default": ""
+          },
+          {
+            "id": "Kenku_Playing_Sounds",
+            "type": "text",
+            "desc": "Playing Sounds",
             "default": ""
           }
         ]

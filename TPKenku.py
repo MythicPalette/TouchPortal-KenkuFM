@@ -33,6 +33,15 @@ def query_api():
     TPClient.stateUpdate("Kenku_Current_Track_Name", track['title'] if track is not None else "")
     TPClient.stateUpdate("Kenku_Current_Track_Id", track['id'] if track is not None else "")
 
+    # Get the playing sounds
+    soundData = Kenku.get_playing_sounds()
+    sounds = []
+    for sound in soundData:
+        sounds.append(sound['id'])
+
+    TPClient.stateUpdate("Kenku_Playing_Sounds", ",".join(sounds))
+    
+
 def query_loop():
     while not __kill_thread.is_set():
         Kenku.query_status()
@@ -108,6 +117,18 @@ def onAction(data):
         board = data['data'][0]['value']
         id = data['data'][1]['value']
         call_api(board.lower(), Kenku.ACTION_PLAY, "PUT", data={"id":id}, wait=True)
+
+    elif data['actionId'] == "Kenku_ToggleSound":
+        soundId = data['data'][0]['value']
+        sounds = Kenku.get_playing_sounds()
+        for sound in sounds:
+            # If the sound is found, stop it.
+            if sound['id'] == soundId:
+                call_api(Kenku.SOUNDBOARD, Kenku.ACTION_STOP, Kenku.METHOD_PUT, data={"id":soundId})
+                return
+        
+        # The sound was not playing so start it
+        call_api(Kenku.SOUNDBOARD, Kenku.ACTION_PLAY, "PUT", data={"id":soundId})
 
     elif data['actionId'] == "Kenku_StopSound":
         playlistidx = get_index_from_str(data['data'][0]['value'])
